@@ -6,12 +6,15 @@ import java.io.IOException;
 
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
+import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.eBanking.Base.BaseClass;
 import com.eBanking.Utilities.XLUtils;
 import com.eBanking.pageObjects.LoginPage;
+
+import Data.TestData;
 
 public class LoginDDTest_TC002 extends BaseClass{
 	JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -28,21 +31,15 @@ public class LoginDDTest_TC002 extends BaseClass{
 		logger.info("Clicked on submit button");
 		Thread.sleep(3000);
 		
-		
-		if (isAlertPresent()== true) {
-			driver.switchTo().alert().accept();
-			driver.switchTo().defaultContent();
-			CaptureScreen(driver,"LoginDDT");
-			logger.warn("Login Failed");
-			assertTrue(true);
+		if(driver.getTitle().contentEquals(TestData.homePageTitle)) {
+			Assert.assertTrue(true);
+			logger.info("Login test case passed");
 		}
-		else {
-			assertTrue(false);
-			logger.info("Login Passed");
-			js.executeScript("window.scrollBy(0,250)", "");
-			lp.clickOnLogout();
-			driver.switchTo().alert().accept();
-			driver.switchTo().defaultContent();
+		else
+		{
+			CaptureScreen(driver,"LoginDDT");
+			Assert.assertTrue(false);
+			logger.info("Login DD test case failed");
 		}
 	}
 	
